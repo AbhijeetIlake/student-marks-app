@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Students Marks App</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(to right, #e0f7fa, #80deea);
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .container {
+        background: #ffffffee;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #00796b;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        width: 100%;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+      }
+
+      button {
+        padding: 10px 20px;
+        background-color: #00796b;
+        border: none;
+        border-radius: 6px;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #004d40;
+      }
+
+      #result {
+        margin-top: 20px;
+        font-weight: bold;
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Student Marks Checker</h1>
+      <input type="text" id="studentName" placeholder="Enter student name" />
+      <button onclick="getMarks()">Get Marks</button>
+      <div id="result"></div>
+    </div>
+
+    <script>
+      async function getMarks() {
+        const name = document.getElementById("studentName").value.trim();
+        if (!name) {
+          document.getElementById("result").textContent = "Please enter a name.";
+          return;
+        }
+
+        try {
+          const response = await fetch(`http://localhost:3000/api/marks/${name}`);
+          const data = await response.json();
+          document.getElementById("result").textContent = data.marks
+            ? `${name}'s marks: ${data.marks}`
+            : "Student not found";
+        } catch (error) {
+          document.getElementById("result").textContent = "Error fetching marks. Please try again.";
+          console.error(error);
+        }
+      }
+    </script>
+  </body>
+</html>
